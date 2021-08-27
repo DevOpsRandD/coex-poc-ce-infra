@@ -21,4 +21,7 @@ module "chaos_engineering_network" {
   sub_priv_1_cidr = "10.100.0.0/21"
   sub_priv_2_cidr = "10.100.8.0/21"
   sub_priv_3_cidr = "10.100.16.0/21"
+  sub_pub_1_cidr  = "10.100.24.0/22"
+  sub_pub_2_cidr  = "10.100.28.0/23"
+  sub_pub_3_cidr  = "10.100.30.0/23"
 }
