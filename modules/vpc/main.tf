@@ -46,16 +46,6 @@ resource "aws_subnet" "pub_1" {
   }
 }
 
-resource "aws_subnet" "pub_1" {
-  vpc_id            = aws_vpc.vpc.id
-  cidr_block        = var.sub_pub_1_cidr
-  availability_zone = "us-west-2a"
-  tags = {
-    Name    = format("%s-pub-1", var.vpc_name)
-    Project = var.project
-  }
-}
-
 resource "aws_subnet" "pub_2" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.sub_pub_2_cidr
