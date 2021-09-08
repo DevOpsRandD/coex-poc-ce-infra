@@ -52,7 +52,7 @@ resource "aws_internet_gateway" "igw" {
 
 ## Nat Gateway
 resource "aws_nat_gateway" "ngw" {
-  allocation_id = aws_eip.ngw-eip.id
+  allocation_id = aws_eip.ngw_eip.id
   subnet_id     = aws_subnet.public_subnets[0].id
   tags = {
     Name = format("%s-ngw", var.vpc_name)
