@@ -1,0 +1,13 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: chaos-engineering-cluster
+  region: us-west-2
+
+vpc:
+  subnets:
+    private:
+      us-west-2a: {id: subnet-0ae18a27f908085ac}
+      us-west-2b: {id: subnet-06df8d330382e6902}
+      us-west-2c: {id: subnet-0e9acd0062be81ef1}
