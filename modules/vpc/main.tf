@@ -32,7 +32,7 @@ resource "aws_subnet" "public_subnets" {
 }
 
 ## Elastic IP
-resource "aws_eip" "ngw-eip" {
+resource "aws_eip" "ngw_eip" {
   vpc = true
   tags = {
     Name = format("%s-ngw-eip", var.vpc_name)
