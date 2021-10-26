@@ -112,6 +112,9 @@ export NODE_LABEL="beta.kubernetes.io/os=linux"
 
 chaos run chaos/node-delete.yaml
 
+chaos run chaos/node-drain.yaml
+
+chaos run chaos/node-uncordon.yaml
 
 
 # Destroying What We Created #

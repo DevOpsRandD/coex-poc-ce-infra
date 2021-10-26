@@ -1,5 +1,5 @@
 version: 1.0.0
-title: What happens if we delete a node
+title: What happens if we drain a node
 description: All the instances are distributed among healthy nodes and the applications are healthy
 tags:
 - k8s
@@ -23,14 +23,24 @@ steady-state-hypothesis:
         ns: sock-shop
 method:
 - type: action
-  name: delete-node
+  name: drain-node
   provider:
     type: python
-    func: delete_nodes
+    func: drain_nodes
     module: chaosk8s.node.actions
     arguments:
       label_selector: ${node_label}
       count: 1
       pod_namespace: front-end
+      delete_pods_with_local_storage: true
   pauses: 
-    after: 10
+    after: 1
+rollbacks:
+- type: action
+  name: uncordon-node
+  provider:
+    type: python
+    func: uncordon_node
+    module: chaosk8s.node.actions
+    arguments:
+      label_selector: ${node_label}
