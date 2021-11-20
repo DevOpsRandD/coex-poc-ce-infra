@@ -15,6 +15,6 @@ variable "vpc_config" {
 }
 
 variable "ecr_repos" {
-  type = list(string)
+  type    = list(string)
   default = []
 }

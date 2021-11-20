@@ -12,7 +12,7 @@ module "eks_iam" {
 }
 
 resource "aws_ecr_repository" "repositories" {
-  for_each = toset(var.ecr_repos)
+  for_each             = toset(var.ecr_repos)
   name                 = format("rand-%s", each.value)
   image_tag_mutability = "MUTABLE"
 
