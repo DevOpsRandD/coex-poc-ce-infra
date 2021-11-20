@@ -13,3 +13,8 @@ variable "vpc_config" {
     public_subnets  = list(string)
   })
 }
+
+variable "ecr_repos" {
+  type = list(string)
+  default = []
+}
