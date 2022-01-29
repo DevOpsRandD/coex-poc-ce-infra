@@ -34,7 +34,7 @@ method:
       pod_namespace: front-end
       delete_pods_with_local_storage: true
   pauses: 
-    after: 1
+    after: 50
 rollbacks:
 - type: action
   name: uncordon-node

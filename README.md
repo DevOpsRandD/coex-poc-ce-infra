@@ -116,6 +116,35 @@ chaos run chaos/node-drain.yaml
 
 chaos run chaos/node-uncordon.yaml
 
+# Exploring Experiments Journal #
+#################################
+
+cat chaos/health-http.yaml
+
+chaos run chaos/health-http.yaml \
+--rollback-strategy=always \
+--journal-path journal-health-http.json
+
+cat journal-health-http.json
+
+##############################
+# Creating Experiment Report #
+##############################
+
+# Start a local Docker daemon
+
+docker container run \
+--user $(id -u) \
+--volume $PWD:/tmp/result \
+-it \
+chaostoolkit/reporting \
+-- report \
+--export-format=pdf \
+journal-health-http.json \
+report.pdf
+
+# If Windows, open the `report.pdf` file manually
+open report.pdf
 
 # Destroying What We Created #
 #############################################################

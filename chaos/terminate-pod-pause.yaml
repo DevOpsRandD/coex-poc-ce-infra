@@ -1,6 +1,6 @@
 version: 1.0.0
 title: What happens if we terminate a Pod?
-description: If a Pod is terminated, a new one should be created in its places.
+description: If a Pod is terminated, the service should response the requests
 tags:
 - k8s
 - pod
@@ -26,7 +26,7 @@ method:
     func: terminate_pods
     arguments:
       label_selector: name=front-end
-      rand: true
+      rand: false
       ns: sock-shop
   pauses: 
     after: 50
