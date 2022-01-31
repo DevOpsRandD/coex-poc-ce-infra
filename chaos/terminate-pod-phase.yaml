@@ -53,4 +53,4 @@ method:
       rand: true
       ns: sock-shop
   pauses: 
-    after: 10
+    after: 50

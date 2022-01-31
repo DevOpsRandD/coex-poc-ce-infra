@@ -1,0 +1,66 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: jmeter-frontend-cronjob
+  namespace: sock-shop
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            name: jmeter-fronted-cronjob
+        spec:
+          serviceAccountName: chaos-eng-svc-acct-s3
+          restartPolicy: Never
+
+          volumes:
+            - name: chaos-eng-config
+              emptyDir: {}
+
+          containers:
+            - name: s3-uploader
+              image: amazon/aws-cli:latest
+              command: [
+                'bash',
+                '-c',
+                'aws s3api put-object --bucket chaos-engineering-config-files --key csv/$(date "+%Y%m%d-%H%M%s")-frontend.csv --body /config_data/summary.csv'
+              ]
+              volumeMounts:
+                - name: chaos-eng-config
+                  mountPath: "/config_data"
+
+          initContainers:
+            - name: s3-downloader
+              image: amazon/aws-cli:latest
+              args: [
+                "s3api",
+                "get-object",
+                "--bucket",
+                "chaos-engineering-config-files",
+                "--key",
+                "FrontEnd.jmx",
+                "/config_data/FrontEnd.jmx"
+              ]
+              volumeMounts:
+                - name: chaos-eng-config
+                  mountPath: "/config_data"
+
+            - name: jmeter-worker
+              image: justb4/jmeter
+              args: [ 
+                '-n',
+                '-t',
+                './FrontEnd.jmx',
+                '-l',
+                'summary.csv',
+                '-e',
+                '-o',
+                'test_report'
+              ]
+              volumeMounts:
+                - mountPath: "/config_data"
+                  name: chaos-eng-config
+              workingDir: "/config_data"
+

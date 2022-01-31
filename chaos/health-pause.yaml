@@ -13,7 +13,7 @@ steady-state-hypothesis:
     tolerance: true
     provider:
       type: python
-      func: all_pods_healthy
+      func: all_microservices_healthy
       module: chaosk8s.probes
       arguments:
         ns: sock-shop
@@ -28,3 +28,5 @@ method:
       label_selector: name=front-end
       rand: true
       ns: sock-shop
+  pauses: 
+    after: 10

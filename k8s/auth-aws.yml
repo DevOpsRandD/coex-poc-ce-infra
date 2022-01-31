@@ -1,0 +1,32 @@
+apiVersion: v1
+data:
+  mapRoles: |
+    - groups:
+      - system:bootstrappers
+      - system:nodes
+      rolearn: arn:aws:iam::961518039473:role/eksctl-chaos-engineering-cluster-NodeInstanceRole-749YEQ28JX5G
+      username: system:node:{{EC2PrivateDNSName}}
+  mapUsers: |
+    - userarn: arn:aws:iam::961518039473:user/juan.ocampor
+      username: juan.ocampor
+      groups:
+        - system:masters
+    - userarn: arn:aws:iam::961518039473:user/alejandro.ochoam
+      username: alejandro.ochoam
+      groups:
+        - system:masters
+    - userarn: arn:aws:iam::961518039473:user/alejandro.perdomo
+      username: alejandro.perdomo
+      groups:
+        - system:masters
+    - userarn: arn:aws:iam::961518039473:user/cristian.martinez
+      username: cristian.martinez
+      groups:
+        - system:masters
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2021-09-15T15:31:56Z"
+  name: aws-auth
+  namespace: kube-system
+  resourceVersion: "47322"
+  uid: 949872b9-9154-4991-83b8-c80caadfd263

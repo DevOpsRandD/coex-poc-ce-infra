@@ -1,0 +1,84 @@
+version: 1.0.0
+title: What happens if we terminate an instance of the application?
+description: If an instance of the application is terminated, a new instance should be created
+tags:
+  - k8s
+  - pod
+  - deployment
+configuration:
+  ingress_host:
+    type: env
+    key: INGRESS_HOST
+steady-state-hypothesis:
+  title: The app is healthy
+  probes:
+    - name: The app responds to requests
+      type: probe
+      tolerance: 200
+      provider:
+        type: http
+        timeout: 3
+        verify_tls: false
+        url: http://${ingress_host}
+        headers:
+          Host: sock-shop.acme.com
+method:
+  - type: action
+    name: terminate-app-pod
+    provider:
+      type: python
+      module: chaosk8s.pod.actions
+      func: terminate_pods
+      arguments:
+        label_selector: name=front-end
+        rand: false
+        ns: sock-shop
+    pauses:
+      after: 50
+steady-state-hypothesis:
+  title: The app is healthy
+  probes:
+    - type: probe
+      name: app-responds-to-requests
+      tolerance: 200
+      provider:
+        type: http
+        timeout: 10
+        verify_tls: false
+        url: http://${ingress_host}
+    - type: probe
+      tolerance: 200
+      ref: app-responds-to-requests
+    - type: probe
+      tolerance: 200
+      ref: app-responds-to-requests
+    - type: probe
+      tolerance: 200
+      ref: app-responds-to-requests
+    - type: probe
+      tolerance: 200
+      ref: app-responds-to-requests
+method:
+  - type: action
+    name: abort-failure
+    provider:
+      type: process
+      path: kubectl
+      arguments:
+        - run
+        - siege
+        - --namespace
+        - sock-shop
+        - --image
+        - yokogawa/siege
+        - -it
+        - --rm
+        - --
+        - --concurrent
+        - 50
+        - --time
+        - 20S
+        - "http://a41f026bd7bfa4347a1723ce3103676d-1946661046.us-west-2.elb.amazonaws.com"
+    pauses:
+      after: 5
+
